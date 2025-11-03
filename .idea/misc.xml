@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Black">
+    <option name="sdkName" value="LaifProject" />
+  </component>
+  <component name="GitLabDefaultAccount">
+    <option name="defaultAccountId" value="1f2ec0c5-3049-4028-977a-86f0e6a1ff94" />
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.13" project-jdk-type="Python SDK" />
+</project>

@@ -1,0 +1,34 @@
+[project]
+name = "caremonitor"
+version = "0.1.0"
+description = "Sistema di monitoraggio pazienti (FastAPI + Streamlit)"
+requires-python = ">=3.10"
+
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "sqlalchemy",
+    "psycopg2-binary",
+    "pydantic",
+    "python-dotenv",
+    "requests",
+    "streamlit",
+    "pandas",
+    "plotly"
+]
+
+[tool.setuptools]
+py-modules = ["main", "crud", "database", "models", "schemas", "mock_data"]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-asyncio",
+    "httpx",
+    "faker"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --tb=short"

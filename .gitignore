@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+.env
+.env.*
+
+# Virtualenv
+venv/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+
+# Docker
+*.log
+*.pid
+*.db
+*/__pycache__/
+*/*/__pycache__/
+*.sqlite3
+
+# Streamlit cache
+frontend/.streamlit/
+frontend/__pycache__/
