@@ -100,7 +100,7 @@ help:
 	@echo "=== 💊 CareMonitor Makefile ==="
 	@echo "Comandi principali:"
 	@echo "  make install           → Builda tutte le immagini Docker"
-	@echo "  make up                → Avvia stack (backend + db + frontend)"
+	@echo "  make run                → Avvia stack (backend + db + frontend)"
 	@echo "  make down              → Ferma e rimuove i container"
 	@echo "  make rebuild-backend   → Ricostruisce solo il backend"
 	@echo "  make logs              → Mostra i log in tempo reale"

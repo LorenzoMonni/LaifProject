@@ -1,6 +1,13 @@
 # 🏥 CareMonitor
 
-Sistema demo per monitoraggio pazienti in una casa di riposo.
+Sistema demo per monitoraggio pazienti in una casa di riposo. La gestione degli entry-point per l'installazione e la gestione
+dell'app è stata progettata tramite il Makefile nella root di progetto. Per informazioni dettagliate sul suo funzionamento
+eseguire:
+
+```bash
+make help
+```
+
 
 ## Architettura
 - **Backend**: FastAPI + SQLAlchemy + PostgreSQL  
