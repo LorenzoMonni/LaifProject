@@ -8,9 +8,10 @@ def generate_mock_data():
     models.Base.metadata.create_all(bind=db.get_bind())
 
     if db.query(models.Patient).count() > 0:
-        print("⚠️ Dati già esistenti. Nessuna azione eseguita.")
-        db.close()
-        return
+        print("♻️ Cancellazione dati precedenti...")
+        db.query(models.Measurement).delete()
+        db.query(models.Patient).delete()
+        db.commit()
 
     patients = [
         {"name": "Mario Rossi", "age": 82, "room": "A1"},

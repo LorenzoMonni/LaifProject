@@ -52,6 +52,15 @@ rebuild:
 	docker compose up -d
 	@echo "✅ Rebuild completato e servizi riavviati!"
 
+hard-rebuild:
+	@echo "🔥 Pulizia completa + rebuild..."
+	docker compose down -v --remove-orphans
+	docker system prune -af
+	docker volume prune -f
+	docker compose build --no-cache
+	docker compose up -d
+	@echo "✅ Rebuild completo e pulizia terminata!"
+
 # Mostra i log live
 logs:
 	@echo "📜 Mostro i log di tutti i container..."
