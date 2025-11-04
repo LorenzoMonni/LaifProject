@@ -2,8 +2,13 @@ import streamlit as st
 import requests
 import pandas as pd
 import plotly.express as px
+import os
+from dotenv import load_dotenv
 
-API_URL = "http://localhost:8000"
+# Carica variabili da .env
+load_dotenv()
+
+API_URL = os.getenv("API_URL", "http://backend:8000")
 
 st.set_page_config(page_title="CareMonitor", page_icon="🏥", layout="wide")
 st.title("🏥 CareMonitor - Monitoraggio Pazienti")
