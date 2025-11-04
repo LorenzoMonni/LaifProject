@@ -1,7 +1,29 @@
-from database import SessionLocal
-import models
-from datetime import datetime, timedelta
+import os
 import random
+from datetime import datetime, timedelta
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+import models
+from database import Base
+
+# ==========================================================
+# 🔧 Configurazione dinamica connessione DB
+# ==========================================================
+
+# Usa la variabile d'ambiente se disponibile, altrimenti fallback
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql+psycopg2://careuser:carepass@db:5432/caremonitor"
+)
+
+# Se siamo su host locale (non dentro container), prova localhost
+if os.getenv("RUNNING_LOCALLY") == "1" or "localhost" in DATABASE_URL:
+    DATABASE_URL = "postgresql+psycopg2://careuser:carepass@localhost:5432/caremonitor"
+
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(bind=engine)
 
 def generate_mock_data():
     db = SessionLocal()
