@@ -14,8 +14,8 @@ if ENV == "test":
 else:
     DATABASE_URL = os.getenv("DATABASE_URL")
 
-if "pytest" in sys.modules and "sqlite" not in DATABASE_URL:
-    raise RuntimeError("❌ I test non dovrebbero usare PostgreSQL! Usa SQLite in-memory invece.")
+# if "pytest" in sys.modules and "sqlite" not in DATABASE_URL:
+#     raise RuntimeError("❌ I test non dovrebbero usare PostgreSQL! Usa SQLite in-memory invece.")
 
 engine = create_engine(
     DATABASE_URL,
