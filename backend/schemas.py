@@ -11,6 +11,7 @@ class MeasurementCreate(MeasurementBase):
 
 class Measurement(MeasurementBase):
     id: int
+    patient_id: int
     timestamp: datetime
 
     class Config:

@@ -38,6 +38,20 @@ rebuild-backend:
 	docker compose build --no-cache backend
 	@echo "✅ Backend ricostruito!"
 
+
+# Ricostruisci TUTTO
+rebuild-backend:
+	@echo "🔁 Ricostruzione immagine backend..."
+	docker compose build --no-cache backend
+	@echo "✅ Backend ricostruito!"
+
+rebuild:
+	@echo "♻️  Rebuild completo delle immagini Docker..."
+	docker compose down --volumes --remove-orphans
+	docker compose build --no-cache
+	docker compose up -d
+	@echo "✅ Rebuild completato e servizi riavviati!"
+
 # Mostra i log live
 logs:
 	@echo "📜 Mostro i log di tutti i container..."
@@ -101,7 +115,7 @@ help:
 	@echo "Comandi principali:"
 	@echo "  make install           → Builda tutte le immagini Docker"
 	@echo "  make run                → Avvia stack (backend + db + frontend)"
-	@echo "  make down              → Ferma e rimuove i container"
+	@echo "  make stop              → Ferma e rimuove i container"
 	@echo "  make rebuild-backend   → Ricostruisce solo il backend"
 	@echo "  make logs              → Mostra i log in tempo reale"
 	@echo ""

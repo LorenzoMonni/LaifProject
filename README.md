@@ -23,7 +23,7 @@ make install
 ```
 ## Avvio
 ```bash
-Make run
+make run
 ```
 
 
