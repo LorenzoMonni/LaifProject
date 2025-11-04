@@ -1,77 +1,95 @@
 # ========================================
 # 💊 CareMonitor Makefile
-# Per gestione semplice da terminale o PyCharm
+# Gestione semplificata progetto Docker (FastAPI + Streamlit + PostgreSQL)
 # ========================================
 
-# Variabili ambiente (override se serve)
+# Variabili ambiente
 ENV_FILE=backend/.env
-PYTHON=python
-BACKEND_DIR=backend
-FRONTEND_DIR=frontend
+PROJECT_NAME=caremonitor
+BACKEND_CONTAINER=backend
+DB_CONTAINER=db
+FRONTEND_CONTAINER=frontend
 
 # ========================================
-# 🔧 Setup ambiente
+# 🔧 Setup & Build
 # ========================================
 
+# Builda TUTTE le immagini Docker (senza cache)
 install:
-	@echo "📦 Installazione dipendenze..."
-	cd $(BACKEND_DIR) && pip install -e .
-	cd $(FRONTEND_DIR) && pip install -r requirements.txt
-	@echo "✅ Installazione completata!"
+	@echo "📦 Buildo tutte le immagini Docker per il progetto $(PROJECT_NAME)..."
+	docker compose build --no-cache
+	@echo "✅ Build completata!"
+
+# Avvio completo dello stack
+run:
+	@echo "🚀 Avvio di tutti i servizi Docker..."
+	docker compose up -d
+	@echo "✅ Tutti i container sono in esecuzione!"
+
+# Stoppa tutto
+stop:
+	@echo "🛑 Arresto e rimozione dei container..."
+	docker compose down
+	@echo "✅ Tutti i container sono stati arrestati!"
+
+# Ricostruisci solo il backend
+rebuild-backend:
+	@echo "🔁 Ricostruzione immagine backend..."
+	docker compose build --no-cache backend
+	@echo "✅ Backend ricostruito!"
+
+# Mostra i log live
+logs:
+	@echo "📜 Mostro i log di tutti i container..."
+	docker compose logs -f
+
+# ========================================
+# 🧱 Database
+# ========================================
 
 init-db:
 	@echo "🧱 Inizializzo il database (PostgreSQL deve essere in esecuzione)..."
-	cd $(BACKEND_DIR) && $(PYTHON) -c "from database import Base, engine; Base.metadata.create_all(bind=engine)"
+	docker compose exec $(BACKEND_CONTAINER) python -c "from database import Base, engine; Base.metadata.create_all(bind=engine)"
 	@echo "✅ Database pronto!"
 
 mock-data:
-	@echo "🧪 Genero dati fittizi (dal container backend)..."
-	docker compose exec backend python mock_data.py
+	@echo "🧪 Genero dati fittizi nel database..."
+	docker compose exec $(BACKEND_CONTAINER) python mock_data.py
 	@echo "✅ Mock data generati!"
-
-
-# ========================================
-# 🚀 Avvio backend (FastAPI)
-# ========================================
-
-run-api:
-	@echo "🚀 Avvio backend FastAPI su http://localhost:8000 ..."
-	cd $(BACKEND_DIR) && uvicorn main:app --reload --env-file $(ENV_FILE)
-
-# ========================================
-# 💻 Avvio frontend (Streamlit)
-# ========================================
-
-run-ui:
-	@echo "🩺 Avvio frontend Streamlit su http://localhost:8501 ..."
-	cd $(FRONTEND_DIR) && streamlit run app.py
 
 # ========================================
 # 🧰 Utility
 # ========================================
 
 lint:
-	@echo "🧹 Linting con Black e isort..."
-	cd $(BACKEND_DIR) && black . && isort .
+	@echo "🧹 Linting del backend con Black e isort..."
+	docker compose exec $(BACKEND_CONTAINER) black .
+	docker compose exec $(BACKEND_CONTAINER) isort .
+	@echo "✅ Lint completato!"
 
 clean:
-	@echo "🗑️ Pulizia file temporanei..."
+	@echo "🗑️ Pulizia file temporanei e container..."
 	find . -type d -name "__pycache__" -exec rm -rf {} +
 	find . -type f -name "*.pyc" -delete
+	docker system prune -f
 	@echo "✅ Pulizia completata!"
 
-# Esegui test
+# ========================================
+# 🧪 Test
+# ========================================
+
 test:
-	cd backend && pytest -v
+	@echo "🧪 Eseguo tutti i test..."
+	docker compose exec $(BACKEND_CONTAINER) pytest -v
+	@echo "✅ Test completati!"
 
-# Esegui solo unit test
 test-unit:
-	cd backend && pytest tests/unit -v
+	@echo "🧩 Eseguo unit test..."
+	docker compose exec $(BACKEND_CONTAINER) pytest tests/unit -v
 
-# Esegui solo integration test
 test-integration:
-	cd backend && pytest tests/integration -v
-
+	@echo "🔗 Eseguo integration test..."
+	docker compose exec $(BACKEND_CONTAINER) pytest tests/integration -v
 
 # ========================================
 # 🏁 Help
@@ -79,13 +97,24 @@ test-integration:
 
 help:
 	@echo ""
-	@echo "=== CareMonitor Makefile ==="
-	@echo "Comandi disponibili:"
-	@echo "  make install       -> Installa tutte le dipendenze"
-	@echo "  make init-db       -> Crea le tabelle nel DB"
-	@echo "  make mock-data     -> Genera dati fittizi"
-	@echo "  make run-api       -> Avvia backend FastAPI"
-	@echo "  make run-ui        -> Avvia frontend Streamlit"
-	@echo "  make lint          -> Formatta il codice"
-	@echo "  make clean         -> Rimuove file temporanei"
+	@echo "=== 💊 CareMonitor Makefile ==="
+	@echo "Comandi principali:"
+	@echo "  make install           → Builda tutte le immagini Docker"
+	@echo "  make up                → Avvia stack (backend + db + frontend)"
+	@echo "  make down              → Ferma e rimuove i container"
+	@echo "  make rebuild-backend   → Ricostruisce solo il backend"
+	@echo "  make logs              → Mostra i log in tempo reale"
+	@echo ""
+	@echo "Gestione DB:"
+	@echo "  make init-db           → Crea le tabelle nel DB"
+	@echo "  make mock-data         → Popola il DB con dati fittizi"
+	@echo ""
+	@echo "Utility:"
+	@echo "  make lint              → Linting backend"
+	@echo "  make clean             → Pulizia temporanei e cache Docker"
+	@echo ""
+	@echo "Testing:"
+	@echo "  make test              → Tutti i test"
+	@echo "  make test-unit         → Solo unit test"
+	@echo "  make test-integration  → Solo integration test"
 	@echo ""

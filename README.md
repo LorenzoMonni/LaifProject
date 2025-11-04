@@ -8,9 +8,15 @@ Sistema demo per monitoraggio pazienti in una casa di riposo.
 - **Database**: PostgreSQL
 - **Container**: Docker Compose
 
+## Installazione
+Il seguente comando installa tramite servizio di Docker Compose tutti i componenti dockerizzati dell'applicazione:
+
+```bash
+make install
+```
 ## Avvio
 ```bash
-docker-compose up --build
+Make run
 ```
 
 
