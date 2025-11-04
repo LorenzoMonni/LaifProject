@@ -25,6 +25,7 @@ make install
 ```bash
 make run
 ```
+E visualizzazione app nel browser all'url http://localhost:8501/
 
 
 ## Main APIs
