@@ -38,13 +38,7 @@ rebuild-backend:
 	docker compose build --no-cache backend
 	@echo "✅ Backend ricostruito!"
 
-
 # Ricostruisci TUTTO
-rebuild-backend:
-	@echo "🔁 Ricostruzione immagine backend..."
-	docker compose build --no-cache backend
-	@echo "✅ Backend ricostruito!"
-
 rebuild:
 	@echo "♻️  Rebuild completo delle immagini Docker..."
 	docker compose down --volumes --remove-orphans
@@ -102,9 +96,9 @@ clean:
 # ========================================
 
 test:
-	@echo "🧪 Eseguo tutti i test..."
-	docker compose exec $(BACKEND_CONTAINER) pytest -v
-	@echo "✅ Test completati!"
+	@echo "🧪 Eseguo test isolati con SQLite test.db..."
+	@rm -f backend/test.db
+	docker compose run --rm backend pytest -v
 
 test-unit:
 	@echo "🧩 Eseguo unit test..."
