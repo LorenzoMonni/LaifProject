@@ -31,6 +31,7 @@ def get_patient_summary(db: Session, patient_id: int):
     return {
         "avg_heart_rate": mean([x.heart_rate for x in m]),
         "avg_temp": mean([x.temperature for x in m]),
-        "avg_bp": mean([x.blood_pressure for x in m]),
+        'avg_temperature': mean([x.temperature for x in m]),
+        'avg_blood_pressure': mean([x.blood_pressure for x in m]),
         "total_measurements": len(m),
     }

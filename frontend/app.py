@@ -32,7 +32,7 @@ else:
     col1.metric("❤️ Battito medio", summary["avg_heart_rate"])
     col2.metric("🌡️ Temperatura media", summary["avg_temperature"])
     col3.metric("💉 Pressione media", summary["avg_blood_pressure"])
-    col4.metric("📈 Misurazioni", summary["count"])
+    col4.metric("📈 Misurazioni", summary["total_measurements"])
 
 # Grafico storico
 df = pd.DataFrame(patient["measurements"])
